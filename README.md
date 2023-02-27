@@ -1,2 +1,2 @@
-# chat_socket.io
-A chat with node express and socket.io
+# chat_webrtc
+A chat with node.js, express, socket.io, react.js and material ui

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat com Socket.IO</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    #messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    #messages li {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    #messages li span {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    #message-form {
+      display: flex;
+    }
+
+    #message-input {
+      flex-grow: 1;
+      margin-right: 10px;
+    }
+
+    #send-button {
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <ul id="messages"></ul>
+  <form id="message-form">
+    <input id="message-input" autocomplete="off" />
+    <button id="send-button">Enviar</button>
+  </form>
+  <script>
+    var socket = io();
+
+    document.querySelector('#message-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var message = document.querySelector('#message-input').value;
+      socket.emit('chat message', message);
+      document.querySelector('#message-input').value = '';
+    });
+
+    socket.on('chat message', function(msg) {
+      var li = document.createElement('li');
+      var span = document.createElement('span');
+      span.textContent = 'Usuário: ';
+      li.appendChild(span);
+      li.appendChild(document.createTextNode(msg));
+      document.querySelector('#messages').appendChild(li);
+    });
+  </script>
+</body>
+</html>

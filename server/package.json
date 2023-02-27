@@ -1,0 +1,35 @@
+{
+  "name": "chat_server",
+  "version": "1.0.0",
+  "description": "A chat with node, express and socket.io",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rodrigoaguerra/chat_socket.io.git"
+  },
+  "keywords": [
+    "chat",
+    "node",
+    "express",
+    "socket.io"
+  ],
+  "author": "Rodrigo Alves Guerra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rodrigoaguerra/chat_socket.io/issues"
+  },
+  "homepage": "https://github.com/rodrigoaguerra/chat_socket.io#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
