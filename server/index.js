@@ -17,16 +17,30 @@ app.use(cors({ origin: 'http://localhost:3000' }));
 
 app.use(express.static(__dirname + '/public'));
 
+// recivied users
+const users = {};
+
 io.on('connection', function(socket) {
-  console.log('Usuário conectado');
+  console.log('Usuário conectado :', socket.id);
+  
+  // Quando o usuário se conecta, salve os dados do usuário na variável "users"
+  socket.on('setUserData', (userData) => {
+    users[socket.id] = userData;
+    console.log(users);
+  })
 
+  // Quando o usuário se desconecta, remove os dados dele do objeto "users"
   socket.on('disconnect', function() {
-    console.log('Usuário desconectado');
+    delete users[socket.id];
+    console.log('Usuário desconectado :', socket.id);
   });
-
+  
+  // evento de envio de mensagens
   socket.on('chat message', function(msg) {
+    const user = users[socket.id];
+    console.log('user is:', user);
     console.log('Mensagem recebida: ' + msg);
-    io.emit('chat message', msg);
+    io.emit('chat message', {user, msg});
   });
 });
 

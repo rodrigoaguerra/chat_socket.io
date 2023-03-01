@@ -8,14 +8,16 @@ import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import Divider from '@mui/material/Divider';
 
 export default function Message(props) {
-    const { socket } = props;
-    
-    const [message, setMessage ] = React.useState('');
-    
-    socket.on('chat message', (data) => {
-        setMessage(data);
-        console.log(`Nova mensagem recebida: ${data}`);
-    });  
+  const { socket } = props;
+  
+  const [listItems, setListItems] = React.useState<string[]>([]);
+  
+  // recievied messages
+  socket.on('chat message', (data: string) => {
+    if(!listItems.includes(data)){
+      setListItems([...listItems, data]);
+    }
+  }); 
 
   return (
     <List
@@ -35,15 +37,19 @@ export default function Message(props) {
         <ListItemText primary="Vacation" secondary="July 20, 2014" />
       </ListItem>
       <Divider component="li" />
-      <ListItem>
-        <ListItemAvatar>
-            <Avatar>
-                <BeachAccessIcon />
-            </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Usuário" secondary={message} />
-       </ListItem>
-      <Divider component="li" />
+     {listItems.map((item, index) => (
+        <>
+          <ListItem key={index}>
+            <ListItemAvatar>
+              <Avatar>
+                  <BeachAccessIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Usuário" secondary={item} />
+          </ListItem>
+          <Divider component="li" />
+        </>
+       ))}
     </List>
   );
 }
