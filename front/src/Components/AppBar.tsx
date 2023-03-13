@@ -7,8 +7,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import Avatar from '@mui/material/Avatar';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Tooltip from '@mui/material/Tooltip';
+import { useSelector } from "react-redux";
 
 export default function InputAppBar() {
+  
+   const user = useSelector(state => state.user);
+
   return (
     <MuiAppBar position="fixed" >
         <Toolbar
@@ -18,14 +22,14 @@ export default function InputAppBar() {
         > 
             <Tooltip title="Open settings">
                 <IconButton sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="#" />
+                <Avatar alt="Remy Sharp" src={user.avatar} />
                 </IconButton>
             </Tooltip>
             <Typography
                 component="p"
                 color="inherit"
                 >
-                Nome do usuário
+                {user.name}
             </Typography>
             <Typography
                 component="h1"

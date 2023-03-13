@@ -14,7 +14,7 @@ export default function Contacts() {
   const socket_ids = Object.keys(users);
 
   return (
-    <List sx={{ mt: '65px', border: "2px solid #f00", width: '100%', maxWidth: 360, height: `calc(100% - 65px)`, overflow:'auto', bgcolor: 'background.paper' }}>
+    <List sx={{ mt: '65px', width: '100%', maxWidth: 360, height: `calc(100% - 65px)`, overflow:'auto', bgcolor: 'background.paper' }}>
       {socket_ids.map((socket_id) => {
         const user = users[socket_id];
         return (

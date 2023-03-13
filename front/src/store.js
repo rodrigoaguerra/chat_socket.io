@@ -2,26 +2,27 @@ import { createStore } from "redux";
 
 // Define o estado inicial da aplicação
 const initialState = {
-  users_count: 0,
-  users: {}
+  user: null,
+  users: {},
+  messages: [],
 };
 
 // Define as ações que podem ser executadas
 export const actions = {
-    users: (users) => ({ type: "USERS", payload: users }),
-    incrementar: (count) => ({ type: "INCREMENTAR", payload: count }),
-    decrementar: () => ({ type: "DECREMENTAR", })
+  user: (user) => ({ type: "SET_USER", payload: user }),
+  users: (users) => ({ type: "USERS", payload: users }),
+  messages: (message) => ({ type: "MESSAGES", payload: message }),
 };
 
 // Define o reducer que atualiza o estado da aplicação
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case "SET_USER": 
+        return {...state, user: action.payload};
     case "USERS": 
-        return {...state, users: action.payload}
-    case "INCREMENTAR":
-        return { ...state, users_count: action.payload };
-    case "DECREMENTAR":
-      return { ...state, users_count: state.contador - 1 };
+        return {...state, users: action.payload};
+    case "MESSAGES": 
+        return {...state, messages: [...state.messages, action.payload]};
     default:
       return state;
   }
