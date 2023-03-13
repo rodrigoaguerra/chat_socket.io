@@ -1,9 +1,15 @@
 // import logo from './logo.svg';
 import io from 'socket.io-client';
 import './App.css';
-// import Input from  './Components/Input.tsx';
-// import Message from './Components/Message.tsx';
-import Dashboard from './Dashboard';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import AppBar from './Components/AppBar.tsx';
+import Contacts from './Components/Contacts.tsx';
+import Messages from './Components/Messages.tsx';
+import InputAppBar from './Components/InputAppBar.tsx';
+import store, { actions } from "./store.js";
+import { Provider } from 'react-redux';
 
 const users = [
   {
@@ -54,31 +60,42 @@ const users = [
   },
 ];
 
-function App() {
-  const socket = io('http://localhost:5000'); 
+const socket = io('http://localhost:5000'); 
   
-  // recivied radom user
-  const randomIndex = Math.floor(Math.random() * users.length);
+// recivied radom user
+const randomIndex = Math.floor(Math.random() * users.length);
 
-  socket.on('connect', () => {
-    // Emitir um evento para o servidor Socket.IO quando o usuário se conecta
-    socket.emit('setUserData', users[randomIndex]);
+socket.on('connect', () => {
+  // Emitir um evento para o servidor Socket.IO quando o usuário se conecta
+  socket.emit('setUserData', users[randomIndex]);
+
+  // recievied users
+  socket.on('users', (data) => {
+    store.dispatch(actions.users(data));
+    store.dispatch(actions.incrementar(Object.keys(data).length));
   });
 
+  // recievied messages
+  socket.on('chat message', (data) => {
+    console.log("chat message is:", data);
+  }); 
+});
+
+const theme = createTheme();
+
+function App() {
   return (
-    <div className="App">
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Message socket={socket} />
-        <div>
-          <Input socket={socket} />
-        </div>
-      </header> */}
-      <Dashboard socket={socket} />
-    </div>
+    <Provider store={store}> 
+      <ThemeProvider theme={theme}>
+        <Box sx={{ display: 'flex', height: '100vh' }}>
+          <CssBaseline />
+          <AppBar />
+          <Contacts />
+          <Messages  socket={socket} />
+          <InputAppBar socket={socket} />
+        </Box>
+      </ThemeProvider>
+    </Provider>
   );
 }
 

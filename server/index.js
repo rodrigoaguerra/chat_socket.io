@@ -22,17 +22,21 @@ const users = {};
 
 io.on('connection', function(socket) {
   console.log('Usuário conectado :', socket.id);
-  
+
   // Quando o usuário se conecta, salve os dados do usuário na variável "users"
   socket.on('setUserData', (userData) => {
     users[socket.id] = userData;
     console.log(users);
+    // Enviar a lista de usuários para todos os clientes quando um novo cliente se conectar
+    io.emit('users', users);
   })
 
   // Quando o usuário se desconecta, remove os dados dele do objeto "users"
   socket.on('disconnect', function() {
     delete users[socket.id];
     console.log('Usuário desconectado :', socket.id);
+    // Enviar a lista de usuários para todos os clientes quando um cliente se desconectar
+    io.emit('users', users);
   });
   
   // evento de envio de mensagens

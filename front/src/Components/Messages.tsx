@@ -57,6 +57,7 @@ const messages = [
       person: '/static/images/avatar/1.jpg',
     },
   ];
+  
 interface User {
     id: number;
     name: string;
@@ -69,7 +70,7 @@ interface Message {
     user: User;
 }
 
-export default function Message(props) {
+export default function Messages(props) {
   const { socket } = props;
   
   const [listItems, setListItems] = React.useState<Message[]>([]);
@@ -80,9 +81,6 @@ export default function Message(props) {
       setListItems([...listItems, data]);
     }
   }); 
-
-  // recivied radom user
-  const randomIndex = Math.floor(Math.random() * messages.length);
 
   return (
     <Paper square sx={{ pb: '10px', pt: '65px', height: `calc(100% - 65px)`, overflow:'auto',}}>
@@ -102,7 +100,7 @@ export default function Message(props) {
                 Yesterday
                 </ListSubheader>
             )}
-            <ListItem button>
+            <ListItem>
                 <ListItemAvatar>
                 <Avatar alt="Profile Picture" src={person} />
                 </ListItemAvatar>
